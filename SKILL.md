@@ -227,7 +227,10 @@ ncm-cli song lyric --songId <加密ID> --userInput "..."       # 获取歌词
 用户说"播放/想听 XX"
   │
   ├── 路径B（优先！）：XX 能匹配下方场景/风格映射？
-  │   → 直接用缓存关键词搜歌单：search playlist → 播放最匹配的（无需确认）
+  │   Step 1: 对照 Part 7 找到匹配风格（如"工作专注"→ Lo-fi、轻音乐）
+  │   Step 2: 查风格数据库增强关键词（见 Part 16d）：读 _index.json → main/*.json，取 2-3 个子分类名
+  │   Step 3: 并行搜索：原始关键词 + 子分类词 → search playlist
+  │   → 播放最匹配的（无需确认）
   │
   ├── 路径A：XX 是具体歌手/专辑/歌曲？（如"播放许巍的专辑"、"听蓝莲花"）
   │   → search song/album → 检查 visible=true & plLevel≠none → play
@@ -282,13 +285,18 @@ ncm-cli queue add --encrypted-id <id3> --original-id <id3>
 
 当用户描述的是**场景、心情、氛围**而非具体歌手/风格时：
 
-**Step 1**：对照 Part 7 场景关键词映射，找到最匹配的 2-3 个方向
+**Step 1**：对照 Part 7 场景关键词映射，找到最匹配的 2-3 个方向（粗粒度风格）
 
-**Step 2**：为每个方向推荐 1 首具体代表曲目（歌手 + 歌名）
+**Step 2（风格数据库增强）**：对每个方向，查风格数据库获取丰富描述（见 Part 16d）
+- 读 `_index.json` 找到对应主分类
+- 读对应 `main/*.json` 取前 3 个子分类及描述
+- 将子分类描述融入推荐理由，让用户更直观感受风格差异
 
-**Step 3**：展示 3-5 个选项，**必须等用户确认后再播放！**
+**Step 3**：为每个方向推荐 1 首代表曲目（歌手 + 歌名），附风格数据库中的描述片段
 
-**Step 4**：用户选择后 → search → 检查可播性 → play
+**Step 4**：展示 3-5 个选项，**必须等用户确认后再播放！**
+
+**Step 5**：用户选择后 → 用该方向的子分类关键词 search playlist → 检查可播性 → play
 
 **示例对话**：
 ```
@@ -296,27 +304,24 @@ User: 适合夜深人静时听的歌
 
 AI: 🌙 推荐几个深夜方向：
 
-1. 🎸 民谣/空灵 — 宋冬野《董小姐》
+1. 🎸 Folk/民谣 — 宋冬野《董小姐》
+   [数据库: "Intimate acoustic textures, confessional songwriting"]
    木吉他的温暖，深夜独处的陪伴
 
-2. 🎹 轻音乐/钢琴 — 李志《关于郑州的记忆》
-   干净的吉他，思绪游走的夜晚
-
-3. 🌊 后摇/纯音乐 — 惘闻《像北方一样僵硬》
+2. 🌊 Post-Rock/后摇 — 惘闻《像北方一样僵硬》
+   [数据库: "Expansive crescendos, wordless emotional narratives"]
    壮阔又孤寂，深夜开车必备
 
-4. 🎷 爵士/慵懒 — 赵雷《成都》
-   情感丰沛，安静夜晚的故事感
-
-5. 🌌 氛围/实验 — 窦唯《春赋》
+3. 🌌 Dark Ambient/氛围 — 窦唯《春赋》
+   [数据库: "Ominous, gloomy, dissonant atmosphere"]
    飘渺抽象，深夜冥想的极品
 
 想听哪个？说序号就行。
 
-User: 3
+User: 2
 
-AI: [search → play]
-🌙 正在播放 惘闻 —《像北方一样僵硬》
+AI: [用 "post-rock instrumental"、"后摇代表作" 等关键词 search → play]
+🌊 正在播放 惘闻 —《像北方一样僵硬》
 不喜欢说"换一个"，我换其他方向。
 ```
 
@@ -852,9 +857,50 @@ Step 4: 显示完整的层级树
 
 **触发词**：「查一下 XX 风格」、「XX 是什么音乐类型」、「推荐一些XX特点的风格」、「给我看看 XX 下面的子类型」、`/genre`
 
+### 16d. 联动播放模式（与 Part 3 集成）
+
+**核心思路**：播放路径B/C确定粗粒度风格后，用数据库取子分类，构造更精准的搜索词。
+
+**完整联动流程**：
+
+```
+Step 1: Part 7/8 → 粗粒度风格（如 "Lo-fi"、"Post-Rock"）
+
+Step 2: 数据库增强
+  → 读 references/_index.json，找到对应主分类
+  → 读 references/main/{genre}.json，取前 3 个子分类
+  → 例：Lo-fi → Study Lo-fi、Chillhop、Bedroom Lo-fi
+
+Step 3: 构造多维搜索词（并行搜索）
+  → 原始关键词（来自 Part 8）
+  → 子分类英文名（如 "chillhop"、"study lofi"）
+  → 子分类 + 中文场景（如 "chillhop 专注"）
+
+Step 4: 取搜索结果中评分/热度最高的歌单 → play
+```
+
+**场景示例**：
+
+| 用户说 | Part 7 方向 | 数据库子分类 | 最终搜索词 |
+|-------|------------|------------|----------|
+| 上班适合听的 | Lo-fi、轻音乐 | Study Lo-fi、Chillhop | `"chillhop专注"` + `"study lofi"` + `"专注工作背景音乐"` |
+| 深夜失眠 | 民谣、空灵 | Indie Folk、Dream Folk | `"dream folk"` + `"华语民谣深夜"` + `"深夜emo歌单"` |
+| 有活力想运动 | EDM、电子 | Big Room House、Hyper-Pop | `"big room"` + `"运动动感"` + `"跑步动感歌单"` |
+| 伤感思念 | 华语流行 | Mandopop、C-Pop Ballad | `"华语情歌"` + `"失恋歌单"` + `"华语流行精选"` |
+
+**读取开销**：`_index.json`（13KB）+ 1个 `main/*.json`（≈2-5KB），总计 < 20KB，不影响性能。
+
+**降级策略**：数据库中未找到匹配风格时，直接用 Part 8 原始关键词搜索，不影响播放。
+
 ---
 
 ## 更新日志
+
+### v2.2 (2026-03-23)
+- 新增 Part 16d：风格数据库联动播放模式
+- 路径B增强：场景匹配后自动查数据库子分类，构造更精准搜索词（并行搜索）
+- 路径C增强：模糊需求推荐时附带数据库风格描述，帮助用户更直观选择
+- 降级策略：数据库未命中时自动回退到 Part 8 原始关键词
 
 ### v2.1 (2026-03-23)
 - 整合 RateYourMusic 5947 风格数据库（来自 qiaomu-music-player-spotify）
