@@ -1,9 +1,9 @@
 ---
 name: qiaomu-music-player-ncm
 description: |
-  网易云音乐全能助手。安装配置、播放控制、搜索、队列管理、场景音乐推荐、
-  每日推荐、心动模式、私人漫游FM、雷达歌单、红心管理、听歌排行、歌词查询、
-  偏好分析、智能推荐、定时推送调度。
+  网易云音乐全能助手 + 5947风格数据库。安装配置、播放控制、搜索、队列管理、
+  场景音乐推荐、每日推荐、心动模式、私人漫游FM、雷达歌单、红心管理、听歌排行、
+  歌词查询、偏好分析、智能推荐、定时推送调度、风格查询与探索。
 
   USE THIS SKILL when user mentions:
   - 播放控制: "播放音乐", "来首歌", "放点音乐", "想听XX", "来点XX音乐", "网易云"
@@ -14,7 +14,8 @@ description: |
   - 智能推荐: "根据我的口味推荐", "分析我的偏好", "帮我选"
   - 安装配置: "安装ncm-cli", "配置API Key", "安装mpv"
   - 调度管理: "每天推送", "定时推荐", "几点推"
-  - /ncm, /netease
+  - 风格查询: "查一下XX风格", "XX是什么音乐类型", "推荐一些XX特点的风格", "给我看看XX的子类型"
+  - /ncm, /netease, /genre
 
 triggers:
   - "播放音乐"
@@ -753,7 +754,112 @@ Step 4: Suno 生成时，tags 参数包含风格名
 
 ---
 
+## Part 16: 风格数据库（5947 个风格）
+
+### 数据结构
+
+`references/` 目录下的分层数据（来自 RateYourMusic）：
+
+```
+references/
+├── _index.json          # 49个主分类概览（必读，13KB）
+├── _meta.json           # 元数据和使用说明
+├── main/                # 49个文件，每个主分类的直接子分类
+│   ├── ambient.json
+│   ├── rock.json
+│   └── ...
+└── detailed/            # 578个文件，有孙分类的子分类详情
+    ├── dark-ambient.json
+    ├── shoegaze.json
+    └── ...
+```
+
+**数据统计**：
+- 总风格数：5947
+- 主分类：49（Rock, Jazz, Ambient, Electronic 等）
+- 子分类：737（level: sub）
+- 孙分类及以下：5161（sub-2/sub-3/sub-4）
+
+**每个风格的数据字段**：
+```json
+{
+  "name": "Dark Ambient",
+  "url": "https://rateyourmusic.com/genre/dark-ambient/",
+  "description": "Emphasizes an ominous, gloomy, and dissonant atmosphere.",
+  "level": "sub",
+  "parent": "Ambient"
+}
+```
+
+### 16a. 快速查询（精确匹配）
+
+**用户说**：「查一下 Shoegaze」/ 「Shoegaze 是什么风格」
+
+```
+Step 1: 读取 _index.json，检查是否为主分类
+Step 2: 如果不是，用 Grep 在 main/*.json 中搜索
+Step 3: 找到后，显示风格信息 + 链接 + 子分类（如果有）
+```
+
+**示例输出**：
+```
+🎵 Shoegaze
+📝 Characterized by ethereal vocals buried beneath walls of distorted guitars...
+🔗 https://rateyourmusic.com/genre/shoegaze/
+📂 属于：Alternative Rock > Noise Pop > Shoegaze
+
+💡 Shoegaze 有 3 个子分类：
+  - Blackgaze（融合黑金属元素）
+  - Nu-Gaze（现代复兴）
+  - Dream Pop（更柔和的变体）
+```
+
+### 16b. 智能推荐（语义匹配）
+
+**用户说**：「推荐一些适合深夜、有点空灵的风格」/ 「我想探索一些冷门的电子乐」
+
+```
+Step 1: 读取 _index.json，扫描所有49个主分类的描述
+Step 2: 用关键词匹配（参考 Part 7 场景映射表）
+Step 3: 找到候选主分类后，读取对应的 main/*.json
+Step 4: 根据描述进一步筛选子分类
+Step 5: 返回 Top 3-5 推荐，带简短说明
+```
+
+找到风格后，联动 Part 8 风格映射或直接用关键词搜网易云歌单。
+
+### 16c. 层级探索（树状浏览）
+
+**用户说**：「给我看看 Ambient 下面都有什么」
+
+```
+Step 1: 读取 main/ambient.json
+Step 2: 列出所有直接子分类（level: sub）
+Step 3: 如果用户进一步询问某个子分类，读取 detailed/{subgenre}.json
+Step 4: 显示完整的层级树
+```
+
+### 读取优化策略
+
+**原则**：渐进式加载，最小化上下文消耗
+
+1. **必读**：`_index.json`（13KB）— 每次风格查询都要先读
+2. **按需读取**：
+   - 精确查询：只读 1 个 `main/*.json` 或 `detailed/*.json`
+   - 智能推荐：读 `_index.json` + 最多 3 个候选 `main/*.json`
+   - 层级探索：逐层展开，用户点击才读下一层
+3. **上下文预算**：单次查询通常 < 30KB
+
+**触发词**：「查一下 XX 风格」、「XX 是什么音乐类型」、「推荐一些XX特点的风格」、「给我看看 XX 下面的子类型」、`/genre`
+
+---
+
 ## 更新日志
+
+### v2.1 (2026-03-23)
+- 整合 RateYourMusic 5947 风格数据库（来自 qiaomu-music-player-spotify）
+- 新增 Part 16：风格查询功能（精确查询、语义推荐、层级探索）
+- 风格查询结果可直接联动网易云搜索播放
 
 ### v2.0 (2026-03-23)
 - **大合并**：整合 ncm-cli-setup、netease-music-cli、netease-music-assistant 全部内容
